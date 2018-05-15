@@ -1,0 +1,205 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+
+<div th:fragment="products">
+    <div style="overflow: hidden;padding: 2px;">
+        <div class="task-content" th:each="product : ${products}">
+            <div class="product-box col-xs-6 col-md-4" style="text-align: center; width: fit-content;    border-radius: 12px;
+                    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #b3b6c5;
+                    background: white;
+                    padding: 9px;
+                    margin: 10px;">
+                <a th:href="${'/product/' + product.id}">
+                    <img th:src="${product.image}" th:height="250px" th:width="250px">
+                </a>
+                <div class="caption" style="text-align: center">
+                    <div class="capt_name"><h2 th:text="${product.name}"></h2></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="cart">
+    <h1 style="font-size: 300%"><b>Корзина</b></h1>
+    <div style="overflow: hidden;padding: 2px;">
+        <div class="task-content" th:each="product : ${products}">
+            <div class="product-box col-xs-6 col-md-4" style="text-align: center; width: fit-content;    border-radius: 12px;
+                    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #b3b6c5;
+                    background: white;
+                    padding: 9px;
+                    margin: 10px;">
+                <div>
+                    <div sec:authorize="hasRole('ROLE_USER')" style="display: contents;">
+                        <form th:method="POST" th:action="@{/deleteItem}">
+                            <input th:value="${product.id}" type="hidden" name="productId">
+                            <button type="submit" style="border: 0; background: transparent; float:right;">
+                                <img src="https://www.freeiconspng.com/uploads/remove-icon-png-26.png" style="width: 64px;">
+                            </button>
+                        </form>
+                    </div>
+                    <a th:href="${'/product/' + product.id}">
+                    <img th:src="${product.image}" th:height="250px" th:width="250px">
+                </a></div>
+
+                <div class="caption" style="text-align: center">
+                    <div class="capt_name"><h2 th:text="${product.name}"></h2></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="product">
+    <div style="overflow: hidden;padding: 2px; display: flex">
+        <div class="task-content">
+            <div style="text-align: center; width: fit-content;    border-radius: 12px;
+                    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #b3b6c5;
+                    background: white;
+                    padding: 9px;
+                    margin: 10px;">
+                <div class="caption" style="text-align: center">
+                    <div class="capt_name"><h2 th:text="${product.name}"></h2></div>
+                </div>
+                <div>
+                    <a th:href="${'/product/' + product.id}">
+                        <img th:src="${product.image}" th:height="500px" th:width="500px">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div style="
+                    width: 100%;
+                    border-radius: 12px;
+                    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #b3b6c5;
+                    background: white;
+                    padding-left: 30px; min-height: 351px;margin: 11px;"
+        >
+            <div sec:authorize="hasRole('ROLE_USER')" style="display: contents;">
+                <form th:method="POST" th:action="@{/addToCart}">
+                    <input th:value="${product.id}" type="hidden" name="productId">
+                    <button type="submit" style="border: 0; background: transparent; float:right;">
+                        <img src="http://infoling.org/infoling2/img/colorful-stickers-part-3-icons-set/png/256x256/add_to_shopping_cart.png" style="width: 64px;">
+                    </button>
+                </form>
+            </div>
+            <div sec:authorize="hasRole('ROLE_ADMIN')" style="display: contents;">
+                <form th:method="POST" th:action="@{/deleteProduct}">
+                    <input th:value="${product.id}" type="hidden" name="productId">
+                    <button type="submit" style="border: 0; background: transparent; float: right;">
+                        <img src="https://www.freeiconspng.com/uploads/remove-icon-png-26.png" style="width: 64px;">
+                    </button>
+                </form>
+            </div>
+            <div class="caption">
+                <div class="capt_name"><h2>Цена: </h2><h3 th:text="${product.price}" style="padding-left: 4%;"></h3></div>
+            </div>
+            <hr>
+            <div class="caption">
+                <div class="capt_name"><h2>Описание: </h2><h3  th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(product.description),'\n','&lt;br /&gt;'))}" style="padding-left: 4%;"></h3></div>
+            </div>
+            <hr>
+            <div class="caption">
+                <div class="capt_name"><h2>Категория: </h2><h3 th:text="${product.category.name}" style="padding-left: 4%;"></h3></div>
+            </div>
+            <hr>
+            <div class="caption">
+                <div class="capt_name"><h2>Бренд:</h2><h3 th:text="${product.brand.name}" style="padding-left: 4%;"></h3></div>
+                <div class="caption">
+                    <div class="capt_name"><h2>Страна:</h2><h3 th:text="${product.brand.country.name}" style="padding-left: 4%;"></h3></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="categories" id="categories">
+    <div class="row row10" style="float: left;">
+        <div class="padding0-10-20 col-xs-6 col-sm-4 col-md-3" style="    margin-right: 26px;">
+            <div class="thumbnail-box" style="text-align: center;
+                    width: fit-content;border-radius: 12px;
+                    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+                    background: white;">
+                <h1 style="    padding: 17px;
+                    font-size: 300%;
+                    color: yellow;
+                    text-shadow: -1px -1px 0 #000, 2px -1px 0 #000, -1px 1px 0 #000, 2px 1px 0 #000;"><b>Категории</b></h1>
+
+                <div class="caption" th:each="category : ${categories}">
+                    <hr style="    height: 1px;
+                    display: block;
+                    margin-top: 0.5em;
+                    margin-bottom: 0.5em;
+                    margin-left: auto;
+                    margin-right: auto;
+                    border-style: inset;
+                    border-width: 1px;">
+                    <h2 style="padding-bottom: 10px;"><a class="capt_name" th:text="${category.name}" th:href="${'/category/'+category.name}"></a></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div th:fragment="header_menu">
+    <div style="background-image: url('/img/img.png');     height: 29px;" >
+
+    </div>
+    <div style="width: 100%; height: 57px; background-color:  #ef3838  ;margin-bottom: 16px;">
+        <div sec:authorize="isAuthenticated()">
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-white">
+                    <li style="color: aliceblue;">
+                        <a style="color: aliceblue;padding-top: 22px;" href="http://localhost:8080/">Каталог</a>
+                    </li>
+                    <li style="color: aliceblue;">
+                        <h1 style="text-shadow: -1px 0 #e0ff00, 0 1px #f6ff00, 1px 0 #4b4b40, 0 -1px #dbff00;margin: auto;
+    padding: 11px;">ToyShop</h1>
+                    </li>
+                </ul>
+                <button class="btn btn-danger" style="float: right;margin-top: 12px;" type="submit" onclick="location.href = '/logout'">Выйти</button>
+                <div sec:authorize="hasRole('ROLE_USER')" style="margin-left: 32px">
+                    <button  style="float: right; margin-right: 13px;margin-top: 12px;" onclick="location.href = '/cart' " class="btn btn-info" type="submit">Корзина</button>
+                </div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')" style="margin-left: 32px">
+                    <button  style="float: right; margin-right: 13px;margin-top: 12px;" onclick="location.href = '/addProduct' " class="btn btn-info" type="submit">Добавить товар</button>
+                    <button  style="float: right; margin-right: 13px;margin-top: 12px;" onclick="location.href = '/addBrand' " class="btn btn-info" type="submit">Добавить бренд</button>
+                    <button  style="float: right; margin-right: 13px;margin-top: 12px;" onclick="location.href = '/getXml' " class="btn btn-info" type="submit">Get XML(products)</button>
+                </div>
+                <ul class="infoUser" style="color: cornsilk;     margin-top: 23px;">
+                    Здравствуйте: <a class="badge badge-pill badge-primary" th:text="${user.name}">t</a>
+                </ul>
+            </div>
+        </div>
+        <div sec:authorize="!isAuthenticated()">
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-white">
+                    <li style="color: aliceblue;">
+                        <a style="color: aliceblue;padding-top: 22px;" href="http://localhost:8080/">Каталог</a>
+                    </li>
+                    <li style="color: aliceblue;">
+                        <h1 style="text-shadow: -1px 0 #e0ff00, 0 1px #f6ff00, 1px 0 #4b4b40, 0 -1px #dbff00;margin: auto;
+    padding: 11px;">ToyShop</h1>
+                    </li>
+                </ul>
+                <div style="float: right;    margin-top: 12px;">
+                    <button class="btn btn-success" type="submit" onclick="location.href = '/login'">Вход/Регистрация</button><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

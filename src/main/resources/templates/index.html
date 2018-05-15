@@ -1,0 +1,20 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToyShop</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="template :: header_menu"></div>
+<div style="width: 100%; margin: auto; padding: 2%">
+    <div th:replace="template :: categories"></div>
+    <div th:if="${cart} == null">
+        <div th:include="template :: ((${product} != null)  ? product : products)"></div>
+    </div>
+    <div th:if="${cart} != null">
+        <div th:replace="template :: cart"></div>
+    </div>
+</div>
+</body>
+</html>

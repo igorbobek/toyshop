@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <title> Spring Boot MVC Security using Thymeleaf </title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
+</head>
+<body>
+<p th:if="${param.error}" class="error">
+    Bad Credentials
+</p>
+
+<div sec:authorize="isAuthenticated()" class="remove-filter pull-left">
+    <button type="submit" onclick="location.href = '/logout'">Log out</button><br>
+    <a class="badge badge-pill badge-primary" th:text="${user.name}">t</a>
+</div>
+<div style="width: 16%; margin: 0 auto; padding-top: 20px">
+    <form th:action="@{/login}" method="POST">
+        User Name : <input type="text" name="name" class="form-control"/> <br/><br/>
+        Password: <input type="password" name="password" class="form-control"/> <br/><br/>
+        <input class="btn btn-primary" type="submit" value="Login"/>
+        <a href="/signup" class="btn btn-default">Signup</a>
+    </form>
+</div>
+</body>
+</html>

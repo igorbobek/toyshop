@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:textarea="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body style="width: 20%; margin: 0 auto">
+<span th:text="${error != null} ? ${error} : ''">someValue</span>
+<form action="/signup" th:object="${user}" method="POST" enctype="utf8">
+    Логин: <div class="form-control" style="margin-bottom: 5px;"><input th:field="*{name}" class="form-control"/>
+    </div>
+    Пароль: <div class="form-control" style="margin-bottom: 5px;"><input type="password" th:field="*{password}" class="form-control"/>
+    </div>
+    Повторите пароль: <div class="form-control" style="margin-bottom: 5px;"><input type="password" name="matchingPassword" class="form-control"/>
+    </div>
+    Email: <div class="form-control" style="margin-bottom: 5px;"><input type="email" th:field="*{email}" class="form-control"/>
+    </div>
+    <button style="margin-top: 10px;" type="submit" class="btn btn-info">Отправить</button>
+</form>
+</body>
+</html>

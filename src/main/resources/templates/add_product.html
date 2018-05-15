@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="container" class="container">
+    <div th:replace="template :: header_menu"></div>
+    <div style="width:50%; margin: auto; text-align: center">
+        <h1>Добавить товар</h1>
+        <form action="/addProduct" th:object="${product}" method="POST" enctype="utf8">
+            Название: <div style="margin-bottom: 5px;"><input th:field="*{name}" class="form-control"/>
+        </div>
+            Цена: <div style="margin-bottom: 5px;"><input type="number" th:field="*{price}" class="form-control"/>
+        </div>
+            Изображение: <div style="margin-bottom: 5px;"><input type="text" th:field="*{image}" class="form-control"/>
+        </div>
+            Описание: <div style="margin-bottom: 5px;"><textarea th:field="*{description}" class="form-control"></textarea>
+        </div>
+            Категория: <div style="margin-bottom: 5px;"><input type="text" th:field="*{category.name}" class="form-control"/>
+        </div>
+            Бренд: <div style="margin-bottom: 5px;"><input type="text" th:field="*{brand.name}" class="form-control"/>
+        </div>
+            <button style="margin-top: 10px;" type="submit" class="btn btn-info">Добавить</button>
+        </form>
+    </div>>
+</div>
+</body>
+</html>
